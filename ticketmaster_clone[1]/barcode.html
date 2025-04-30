@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ticket Barcode</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Ticket Barcode</h1>
+    <nav>
+      <a href="mytickets.html">Back to My Tickets</a>
+    </nav>
+  </header>
+  <main>
+    <div class="ticket" id="ticketDetails">
+      <h2 id="eventName"></h2>
+      <p id="eventDate"></p>
+      <p id="eventVenue"></p>
+      <p id="seatInfo"></p>
+      <canvas id="qrCanvas"></canvas>
+    </div>
+  </main>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticketIndex = urlParams.get("ticket");
+    const tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+
+    if (ticketIndex !== null && tickets[ticketIndex]) {
+      const ticket = tickets[ticketIndex];
+      document.getElementById("eventName").innerText = ticket.event;
+      document.getElementById("eventDate").innerText = ticket.date;
+      document.getElementById("eventVenue").innerText = ticket.venue;
+      document.getElementById("seatInfo").innerText = ticket.seat;
+
+      const qrText = `Event: ${ticket.event} | ${ticket.date} | ${ticket.venue} | ${ticket.seat}`;
+      QRCode.toCanvas(document.getElementById("qrCanvas"), qrText, function (error) {
+        if (error) console.error(error);
+      });
+    } else {
+      document.getElementById("ticketDetails").innerHTML = "<p>Invalid Ticket</p>";
+    }
+  </script>
+</body>
+</html>

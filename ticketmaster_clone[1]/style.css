@@ -1,0 +1,49 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+  padding-bottom: 50px;
+}
+header {
+  background: #102841;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+nav a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+}
+.search input {
+  display: block;
+  width: 80%;
+  margin: 20px auto;
+  padding: 10px;
+}
+.events {
+  display: flex;
+  justify-content: center;
+}
+.event-card {
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  width: 300px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.event-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+.ticket {
+  background: white;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 10px;
+}

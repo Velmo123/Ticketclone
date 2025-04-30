@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content='width=device-width, initial-scale=1.0'/>
+  <title>Create Ticket</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Create a Ticket</h1>
+    <nav>
+      <a href="mytickets.html">My Tickets</a>
+    </nav>
+  </header>
+  <main>
+    <form id="ticketForm">
+      <input type="text" id="eventName" placeholder="Event Name" required />
+      <input type="text" id="eventDate" placeholder="Date (e.g. May 29, 2025)" required />
+      <input type="text" id="eventVenue" placeholder="Venue" required />
+      <input type="text" id="seatInfo" placeholder="Seat (e.g. SEC 707, ROW 2, SEAT 3)" required />
+      <label>Upload Event Image:</label>
+      <input type="file" id="eventImage" accept="image/*" />
+      <button type="submit">Save Ticket</button>
+    </form>
+    <div id="statusMsg"></div>
+  </main>
+  <script>
+    const form = document.getElementById("ticketForm");
+    const status = document.getElementById("statusMsg");
+
+    form.onsubmit = function (e) {
+      e.preventDefault();
+      const reader = new FileReader();
+      const file = document.getElementById("eventImage").files[0];
+
+      reader.onloadend = function () {
+        const ticket = {
+          event: document.getElementById("eventName").value,
+          date: document.getElementById("eventDate").value,
+          venue: document.getElementById("eventVenue").value,
+          seat: document.getElementById("seatInfo").value,
+          imageBase64: reader.result
+        };
+
+        const tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+        tickets.push(ticket);
+        localStorage.setItem("tickets", JSON.stringify(tickets));
+
+        status.innerHTML = "<p style='color:green;'>Ticket saved!</p>";
+        setTimeout(() => {
+          window.location.href = "mytickets.html";
+        }, 1000);
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        reader.onloadend();  // fallback if no image uploaded
+      }
+    };
+  </script>
+</body>
+</html>

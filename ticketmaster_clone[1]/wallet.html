@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content='width=device-width, initial-scale=1.0'/>
+  <title>Wallet Ticket</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .wallet-card {
+      max-width: 400px;
+      margin: 40px auto;
+      background: #1c1c1e;
+      color: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-family: sans-serif;
+    }
+    .wallet-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    .wallet-content {
+      padding: 20px;
+    }
+    .wallet-content h2 {
+      margin: 0 0 10px;
+    }
+    .wallet-content p {
+      margin: 4px 0;
+      font-size: 0.9rem;
+    }
+    #qrCanvas {
+      margin: 20px auto;
+      display: block;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>My Wallet Ticket</h1>
+    <nav>
+      <a href="mytickets.html">Back</a>
+    </nav>
+  </header>
+  <main>
+    <div class="wallet-card" id="walletCard">
+      <img id="eventImage" src="event_banner.jpg" alt="Event">
+      <div class="wallet-content">
+        <h2 id="eventName"></h2>
+        <p id="eventDate"></p>
+        <p id="eventVenue"></p>
+        <p id="seatInfo"></p>
+        <canvas id="qrCanvas" width="200" height="200"></canvas>
+      </div>
+    </div>
+  </main>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticketIndex = urlParams.get("ticket");
+    const tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+
+    if (ticketIndex !== null && tickets[ticketIndex]) {
+      const ticket = tickets[ticketIndex];
+      document.getElementById("eventName").innerText = ticket.event;
+      document.getElementById("eventDate").innerText = ticket.date;
+      document.getElementById("eventVenue").innerText = ticket.venue;
+      document.getElementById("seatInfo").innerText = ticket.seat;
+
+      if (ticket.imageBase64) {
+        document.getElementById("eventImage").src = ticket.imageBase64;
+      }
+
+      const qrText = `Ticket: ${ticket.event} | ${ticket.date} | ${ticket.venue} | ${ticket.seat}`;
+      QRCode.toCanvas(document.getElementById("qrCanvas"), qrText, function (error) {
+        if (error) console.error(error);
+      });
+    } else {
+      document.getElementById("walletCard").innerHTML = "<p style='color:white; padding:20px;'>Ticket not found.</p>";
+    }
+  </script>
+</body>
+</html>

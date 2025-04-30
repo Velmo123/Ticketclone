@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Details</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>TicketClone</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="mytickets.html">My Tickets</a>
+    </nav>
+  </header>
+  <main>
+    <section class="event-details">
+      <img src="event_banner.jpg" alt="Event Image">
+      <h2>Hit Me Hard and Soft: The Tour</h2>
+      <p><strong>Date:</strong> May 29, 2025</p>
+      <p><strong>Location:</strong> Lanxess Arena, Cologne</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Get ready for an unforgettable experience.</p>
+      <button onclick="saveTicket()">Get Ticket (Free)</button>
+    </section>
+  </main>
+  <script>
+    function saveTicket() {
+      let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+      tickets.push({
+        event: "Hit Me Hard and Soft Tour",
+        date: "May 29, 2025",
+        venue: "Lanxess Arena, Cologne",
+        seat: "SEC 707, ROW 2, SEAT 3"
+      });
+      localStorage.setItem("tickets", JSON.stringify(tickets));
+      alert("Ticket saved to your dashboard!");
+      window.location.href = "mytickets.html";
+    }
+  </script>
+</body>
+</html>

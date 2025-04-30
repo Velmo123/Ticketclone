@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content='width=device-width, initial-scale=1.0'/>
+  <title>Transfer Ticket</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Transfer Ticket</h1>
+    <nav>
+      <a href="mytickets.html">Back to My Tickets</a>
+    </nav>
+  </header>
+  <main>
+    <section class="transfer-form">
+      <h2>Forward Ticket</h2>
+      <form onsubmit="transferTicket(event)">
+        <input type="text" id="firstName" placeholder="First Name" required />
+        <input type="text" id="lastName" placeholder="Last Name" required />
+        <input type="email" id="recipientEmail" placeholder="Recipient Email" required />
+        <input type="hidden" id="ticketIndex" />
+        <button type="submit">Send Ticket</button>
+      </form>
+      <div id="message"></div>
+    </section>
+  </main>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticketIndex = urlParams.get("ticket");
+    document.getElementById("ticketIndex").value = ticketIndex;
+
+    function transferTicket(e) {
+      e.preventDefault();
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+      const recipientEmail = document.getElementById("recipientEmail").value;
+
+      let tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+      if (ticketIndex !== null && tickets[ticketIndex]) {
+        tickets[ticketIndex].transferred = true;
+        tickets[ticketIndex].recipient = {
+          firstName,
+          lastName,
+          email: recipientEmail
+        };
+        localStorage.setItem("tickets", JSON.stringify(tickets));
+        document.getElementById("message").innerHTML = "<p style='color:green;'>Ticket sent successfully to " + recipientEmail + "!</p>";
+      } else {
+        document.getElementById("message").innerHTML = "<p style='color:red;'>Ticket not found.</p>";
+      }
+    }
+  </script>
+</body>
+</html>

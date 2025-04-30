@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Tickets</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>My Tickets</h1>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+  <main>
+    <div id="ticketList"></div>
+  </main>
+  <script>
+    const tickets = JSON.parse(localStorage.getItem("tickets") || "[]");
+    const container = document.getElementById("ticketList");
+
+    if (tickets.length === 0) {
+      container.innerHTML = "<p>You have no tickets yet.</p>";
+    } else {
+      tickets.forEach((t, index) => {
+        const ticket = document.createElement("div");
+        ticket.className = "ticket";
+        ticket.innerHTML = `
+          <h3>${t.event}</h3>
+          <p>${t.date}</p>
+          <p>${t.venue}</p>
+          <p>${t.seat}</p>
+          <a href="barcode.html?ticket=${index}">View Barcode</a>
+        `;
+        container.appendChild(ticket);
+      });
+    }
+  </script>
+</body>
+</html>
